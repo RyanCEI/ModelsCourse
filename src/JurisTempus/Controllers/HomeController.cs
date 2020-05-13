@@ -47,6 +47,23 @@ namespace JurisTempus.Controllers
       return View(_mapper.Map<ClientViewModel>(result));
     }
 
+    [HttpPost("editor/{id:int}")]
+    public async Task<IActionResult> ClientEditor(int id, ClientViewModel model)
+    {
+      var oldClient = await _context.Clients.Where(c => c.Id == id)
+        .Include(c => c.Address)
+        .FirstOrDefaultAsync();
+      if (oldClient != null)
+      {
+        _mapper.Map(model, oldClient);  // Copy changes
+      }
+      if (await _context.SaveChangesAsync() > 0)
+      {
+        return RedirectToAction("Index");
+      }
+      return View();
+    }
+
     [HttpGet("timesheet")]
     public IActionResult Timesheet()
     {
