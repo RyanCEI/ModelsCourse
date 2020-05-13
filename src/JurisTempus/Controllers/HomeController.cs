@@ -9,6 +9,7 @@ using JurisTempus.Data;
 using Microsoft.EntityFrameworkCore;
 using JurisTempus.ViewModels;
 using AutoMapper;
+using JurisTempus.Data.Entities;
 
 namespace JurisTempus.Controllers
 {
@@ -50,16 +51,24 @@ namespace JurisTempus.Controllers
     [HttpPost("editor/{id:int}")]
     public async Task<IActionResult> ClientEditor(int id, ClientViewModel model)
     {
-      var oldClient = await _context.Clients.Where(c => c.Id == id)
-        .Include(c => c.Address)
-        .FirstOrDefaultAsync();
-      if (oldClient != null)
+      if (ModelState.IsValid)
       {
-        _mapper.Map(model, oldClient);  // Copy changes
-      }
-      if (await _context.SaveChangesAsync() > 0)
-      {
-        return RedirectToAction("Index");
+        var oldClient = await _context.Clients.Where(c => c.Id == id)
+          .Include(c => c.Address)
+          .FirstOrDefaultAsync();
+        if (oldClient != null)
+        {
+          _mapper.Map(model, oldClient);  // Copy changes
+        }
+        else
+        {
+          var newClient = _mapper.Map<Client>(model);
+          _context.Add(newClient);
+        }
+        if (await _context.SaveChangesAsync() > 0)
+        {
+          return RedirectToAction("Index");
+        }
       }
       return View();
     }

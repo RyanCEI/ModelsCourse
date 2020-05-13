@@ -1,4 +1,5 @@
 using JurisTempus.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace JurisTempus.ViewModels
 {
