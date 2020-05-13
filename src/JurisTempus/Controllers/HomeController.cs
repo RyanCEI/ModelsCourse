@@ -44,7 +44,7 @@ namespace JurisTempus.Controllers
         .Where(c => c.Id == id)
         .FirstOrDefaultAsync();
 
-      return View(result);
+      return View(_mapper.Map<ClientViewModel>(result));
     }
 
     [HttpGet("timesheet")]

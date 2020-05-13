@@ -33,8 +33,9 @@ namespace JurisTempus
         cfg.UseSqlServer(Configuration.GetConnectionString("JurisDb"));
       });
       services.AddAutoMapper(Assembly.GetExecutingAssembly());
-      services.AddRazorPages();
+      services.AddRazorPages().AddRazorRuntimeCompilation();
       services.AddControllersWithViews()
+        .AddRazorRuntimeCompilation()
         .AddNewtonsoftJson(cfg => cfg.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
     }
 
