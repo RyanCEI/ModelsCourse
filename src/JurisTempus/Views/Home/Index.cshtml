@@ -10,6 +10,14 @@
       {
         <div>@client.Name - @client.Phone</div>
         <div>@client.CityTown - @client.StateProvince</div>
+        <div>
+          <ul>
+            @foreach (var clientCase in client.Cases)
+            {
+              <li>@clientCase.FileNumber</li>
+            }
+        </ul>
+          </div>
       }
     </div>
   </div>
